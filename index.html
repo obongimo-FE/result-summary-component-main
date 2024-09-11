@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Frontend Mentor | Results summary component</title>
+</head>
+<body onload="showList()">
+  <div class="container">
+    <div class="section">
+      <div class="left-card">
+        <h3>Your Result</h3>
+        <div class="scoreboard">
+          <p id="t-score">76</p>
+          <span>of 100</span>
+        </div>
+        <h2>Great</h2>
+        <p id="remark">You scored higher than 65% of the people who have taken these tests.</p>
+      </div>
+      <div class="right-card" id="parent">
+        <h2>Summary</h2>
+        <a href="#" id="btn-continue">Continue</a>
+      </div>
+    </div>
+    <div class="attribution">
+      Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+      Coded by <a href="https://x.com/Obongimo" target="_blank">Obongimo</a>.
+    </div>
+  </div>
+  <script>
+    function showList() {
+      fetch("./data.json")
+      .then(response => response.json())
+      .then(data => createList(data));
+    }
+
+    function createList(data){
+      const parentElement = document.getElementById("parent");
+      for(let i = 0; i < data.length; i++) {
+
+        const summaryDiv = document.createElement("div");
+        var summaryClass = data[i].category;
+        summaryDiv.classList.add("score-summary", summaryClass.toLowerCase());
+        
+        const titleDiv = document.createElement("div");
+        titleDiv.classList.add("title");
+
+        const imgTag = document.createElement("img");
+        imgTag.setAttribute("src", data[i].icon);
+        imgTag.setAttribute("alt", data[i].category);
+
+        const categorySpan = document.createElement("span");
+        categorySpan.innerHTML = data[i].category;
+
+        const scoreDiv = document.createElement("div");
+        scoreDiv.classList.add("score");
+
+        const scoreParagraph = document.createElement("p");
+        scoreParagraph.innerHTML = data[i].score + " ";
+
+        const scoreSpan = document.createElement("span");
+        scoreSpan.innerHTML = "/ 100";
+
+        scoreParagraph.append(scoreSpan);
+        scoreDiv.append(scoreParagraph);
+        titleDiv.append(imgTag);
+        titleDiv.append(categorySpan);
+        summaryDiv.append(titleDiv);
+        summaryDiv.append(scoreDiv);
+        parentElement.insertBefore(summaryDiv, document.getElementById("btn-continue"));
+      }
+    }
+  </script>
+</body>
+</html>
